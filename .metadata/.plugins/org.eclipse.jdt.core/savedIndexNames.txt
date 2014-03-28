@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/Users/l2y/mathapp/.metadata/.plugins/org.eclipse.jdt.core
+1343628091.index
+1430398984.index
+948777050.index
