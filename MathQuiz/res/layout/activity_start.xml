@@ -6,17 +6,37 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".StartActivity" >
+    tools:context=".StartActivity" 
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title" />
+        android:gravity="center_vertical"
+        android:text="@string/title"
+        android:textSize="30sp" 
+        android:layout_marginBottom="50sp"
+        android:id="@+id/title"/>
     
-    <TextView
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:text="@string/start"
+        android:layout_marginBottom="30sp"
+        android:id="@+id/start"/>
+    
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/equation"
-        android:text="@string/holder_equation" />
+        android:text="@string/leaderboards"
+        android:layout_marginBottom="30sp"
+        android:id="@+id/leaderboards"/>
+    
+    <Button 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/other"
+        android:layout_marginBottom="30sp"
+        android:id="@+id/other"/>
 
 </LinearLayout>

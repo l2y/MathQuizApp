@@ -1,0 +1,38 @@
+package com.rn.mathquiz;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+
+public class StartActivity extends Activity {
+
+	private Button start = (Button) findViewById(R.id.start);
+	private Button leaderboards = (Button) findViewById(R.id.leaderboards);
+	private Button options = (Button) findViewById(R.id.leaderboards);
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);     
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_start);
+        
+        Button start = (Button)findViewById(R.id.start);
+        
+        setButtons();
+    }
+    
+    private void setButtons() {
+    	start.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent (StartActivity.this, QuizActivity.class);
+				
+			}
+		});
+    }
+    
+}
