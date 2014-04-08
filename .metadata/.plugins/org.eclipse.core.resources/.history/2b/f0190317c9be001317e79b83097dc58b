@@ -2,7 +2,6 @@ package com.rn.mathquiz;
 
 import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ public class QuizActivity extends Activity {
 	
 	TextView combo;
 	TextView record;
-	TextView time;
 	
 	int sendAnswer = 0;
 	int correctCount = 0;
@@ -33,7 +31,6 @@ public class QuizActivity extends Activity {
 	int operationType = 0;
 	
 	Timer runTime;
-	int TimeCounter = 0;
 	
 	public static int ADDITION = 1;
 	public static int SUBTRACTION = 2;
@@ -54,7 +51,6 @@ public class QuizActivity extends Activity {
         
         combo = (TextView) findViewById(R.id.combo);
         record = (TextView) findViewById(R.id.record);
-        time = (TextView) findViewById(R.id.time);
         
         combo.setText("0");
         record.setText("0-0");
@@ -62,22 +58,8 @@ public class QuizActivity extends Activity {
         operationType = ADDITION;
         setEquation(operationType);
         setAnswerBox();
-        setRunTimer();
     }
-    private void setRunTimer() {
-    	runTime = new Timer();
-    	runTime.scheduleAtFixedRate(new TimerTask() {
-    		@Override
-    		public void run() {
-    			runOnUiThread(new Runnable() {
-    				public void run() {
-    					TimeCounter++;
-    					time.setText(TimeCounter/6000+":"+TimeCounter/100+":"+TimeCounter%100);
-    				}
-    			});
-    		}
-    	},1000,10);//start running on first second, repeat every 10ms after
-    }
+    
     private void setAnswerBox() {
     	answer.setOnEditorActionListener(new OnEditorActionListener() {
 

@@ -23,7 +23,6 @@ public class QuizActivity extends Activity {
 	
 	TextView combo;
 	TextView record;
-	TextView time;
 	
 	int sendAnswer = 0;
 	int correctCount = 0;
@@ -54,7 +53,6 @@ public class QuizActivity extends Activity {
         
         combo = (TextView) findViewById(R.id.combo);
         record = (TextView) findViewById(R.id.record);
-        time = (TextView) findViewById(R.id.time);
         
         combo.setText("0");
         record.setText("0-0");
@@ -72,11 +70,10 @@ public class QuizActivity extends Activity {
     			runOnUiThread(new Runnable() {
     				public void run() {
     					TimeCounter++;
-    					time.setText(TimeCounter/6000+":"+TimeCounter/100+":"+TimeCounter%100);
     				}
     			});
     		}
-    	},1000,10);//start running on first second, repeat every 10ms after
+    	});
     }
     private void setAnswerBox() {
     	answer.setOnEditorActionListener(new OnEditorActionListener() {
