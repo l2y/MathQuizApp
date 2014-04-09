@@ -11,7 +11,7 @@ public class StartActivity extends Activity {
 
 	private Button start;
 	private Button leaderboards;
-	private Button options;
+	private Button other;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class StartActivity extends Activity {
         
         start = (Button) findViewById(R.id.start);
         leaderboards = (Button) findViewById(R.id.leaderboards);
-        options = (Button) findViewById(R.id.leaderboards);
+        other = (Button) findViewById(R.id.other);
         
         setButtons();
     }
@@ -36,6 +36,22 @@ public class StartActivity extends Activity {
 				
 			}
 		});
+    	leaderboards.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent (StartActivity.this, QuizActivity.class);
+				startActivity(intent);
+				
+			}
+		});
+    	other.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent (StartActivity.this, QuizActivity.class);
+				startActivity(intent);
+				
+			}
+    	});
     }
     
 }

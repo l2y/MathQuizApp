@@ -5,12 +5,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -29,17 +33,19 @@ public class QuizActivity extends Activity {
 	int correctCount = 0;
 	int comboCount = 0;
 	int incorrectCount = 0;
+	int maxCombo = 0;
 	
 	int operationType = 0;
 	
 	Timer runTime;
 	int TimeCounter = 0;
 	
+	int digit = 1;
+	
 	public static int ADDITION = 1;
 	public static int SUBTRACTION = 2;
 	public static int MULTIPLICATION = 3;
 	public static int DIVISION = 4;
-	public static int REMAINDER = 5;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +62,7 @@ public class QuizActivity extends Activity {
         record = (TextView) findViewById(R.id.record);
         time = (TextView) findViewById(R.id.time);
         
-        combo.setText("0");
-        record.setText("0-0");
+        setStatistics();
         
         operationType = ADDITION;
         setEquation(operationType);
@@ -72,11 +77,11 @@ public class QuizActivity extends Activity {
     			runOnUiThread(new Runnable() {
     				public void run() {
     					TimeCounter++;
-    					time.setText(TimeCounter/6000+":"+TimeCounter/100+":"+TimeCounter%100);
+    					time.setText(TimeCounter/6000+":"+TimeCounter/100 % 60+":"+TimeCounter % 100);
     				}
     			});
     		}
-    	},1000,10);//start running on first second, repeat every 10ms after
+    	},0,10);//start running on first second, repeat every 10ms after
     }
     private void setAnswerBox() {
     	answer.setOnEditorActionListener(new OnEditorActionListener() {
@@ -86,21 +91,42 @@ public class QuizActivity extends Activity {
 					KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
 					if (Integer.parseInt(answer.getText().toString()) == sendAnswer){
-						setEquation(operationType);
+						addToHistory();
 						answer.setTextColor(Color.parseColor("#000000"));
 						comboCount++;
+						maxCombo = Math.max(maxCombo, comboCount);
 						correctCount++;
+						setEquation(operationType);
 					} else {
 						answer.setTextColor(Color.parseColor("#CD181F"));
 						comboCount = 0;
 						incorrectCount++;
 					}
 					setStatistics();
+					//Quiz Completed
+					if(correctCount == 10){
+						runTime.cancel();
+						Intent intent = new Intent(QuizActivity.this, ResultsActivity.class);
+						intent.putExtra("combo", maxCombo);
+						intent.putExtra("correct", correctCount);
+						intent.putExtra("incorrect", incorrectCount);
+						intent.putExtra("timer", TimeCounter);
+						startActivity(intent);
+						finish();
+					}
+						
 				}
 				return true;
 			}
     		
     	});
+    }
+    private void addToHistory(){
+    	TextView historyCell = new TextView(this);
+    	historyCell.setText(numberOne.getText().toString() + " + " + numberTwo.getText().toString() + " = " + sendAnswer);
+    	View history = findViewById(R.id.history);
+    	historyCell.setGravity(Gravity.CENTER);
+    	((LinearLayout)history).addView(historyCell, 0);
     }
     private void setStatistics(){
     	combo.setText(Integer.toString(comboCount));
@@ -109,8 +135,8 @@ public class QuizActivity extends Activity {
     private void setEquation(int operation) {
     	Random rand = new Random();
     	
-    	numberOne.setText(Integer.toString(rand.nextInt(10)));
-    	numberTwo.setText(Integer.toString(rand.nextInt(10)));
+    	numberOne.setText(Integer.toString(rand.nextInt((int)Math.pow(10,digit))));
+    	numberTwo.setText(Integer.toString(rand.nextInt((int)Math.pow(10,digit))));
     	
     	if (operation == ADDITION) {
     		operator.setText("+");
@@ -124,11 +150,7 @@ public class QuizActivity extends Activity {
     	} else if (operation == DIVISION) {
     		operator.setText("/");
     		sendAnswer = (Integer.parseInt(numberOne.getText().toString())) / (Integer.parseInt(numberTwo.getText().toString()));
-    	} else if (operation == REMAINDER) {
-    		operator.setText("%");
-    		sendAnswer = (Integer.parseInt(numberOne.getText().toString())) % (Integer.parseInt(numberTwo.getText().toString()));
-    	}
+    	} 
     	answer.setText(Integer.toString(sendAnswer));
-//    	getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 }
